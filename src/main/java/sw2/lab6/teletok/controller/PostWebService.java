@@ -28,21 +28,22 @@ public class PostWebService {
     }
 
     @ResponseBody
-    @GetMapping(value = "/ws/post/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity obtenerPost(@PathVariable("id") String idStr) {
+    @GetMapping(value = "/ws/post/{description}/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity obtenerPost(@PathVariable("description") String description,
+                                      @PathVariable("username") String username) {
         HashMap<String, Object> hashMap = new HashMap<>();
         HttpStatus httpStatus;
+        List<Post> listaP = postRepository.findAll();
 
         try {
-            int id = Integer.parseInt(idStr);
-            Optional<Post> opt = postRepository.findById(id);
-            if (opt.isPresent()) {
+            List<Post> lista = postRepository.obtenerPost(description, username);
+            if (!lista.isEmpty()) {
                 hashMap.put("estado", "ok");
-                hashMap.put("post", opt.get());
+                hashMap.put("estado", lista);
                 httpStatus = HttpStatus.OK;
             } else {
-                hashMap.put("estado", "error");
-                hashMap.put("msg", "El post con id " + id + " no existe.");
+                hashMap.put("estado", "ok");
+                hashMap.put("msg", listaP);
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
         } catch (NumberFormatException e) {
