@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import sw2.lab6.teletok.dto.CommentPost;
 import sw2.lab6.teletok.entity.Post;
 import sw2.lab6.teletok.entity.PostComment;
