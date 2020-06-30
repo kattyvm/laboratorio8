@@ -16,6 +16,7 @@ import sw2.lab6.teletok.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -27,14 +28,14 @@ public class UserController {
     public String signIn(){
         return "user/signIn";
     }
-
+/*
     @GetMapping("/user/signInRedirect")
     public String signInRedirect(Authentication auth, HttpSession session){
-        User user = userRepository.findByUsername(auth.getName());
+        Optional user = userRepository.findByUsername(auth.getName());
         session.setAttribute("user", user);
         return "redirect:/";
     }
-
+*/
     @GetMapping("/user/signUp")
     public String signUp(@ModelAttribute("user") User user){
         return "user/signUp";
