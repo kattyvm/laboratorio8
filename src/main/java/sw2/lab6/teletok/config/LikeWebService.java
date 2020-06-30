@@ -1,65 +1,70 @@
 package sw2.lab6.teletok.config;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sw2.lab6.teletok.dto.CommentPost;
+import sw2.lab6.teletok.dto.LikePost;
 import sw2.lab6.teletok.entity.Post;
 import sw2.lab6.teletok.entity.PostComment;
+import sw2.lab6.teletok.entity.PostLike;
 import sw2.lab6.teletok.entity.Token;
 import sw2.lab6.teletok.repository.PostCommentRepository;
+import sw2.lab6.teletok.repository.PostLikeRepository;
 import sw2.lab6.teletok.repository.PostRepository;
 import sw2.lab6.teletok.repository.TokenRepository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin
-public class CommentWebService {
+public class LikeWebService {
 
     @Autowired
-    PostCommentRepository postCommentRepository;
+    PostLikeRepository postLikeRepository;
     @Autowired
     TokenRepository tokenRepository;
     @Autowired
     PostRepository postRepository;
 
-
-    @PostMapping(value = "/ws/post/comment", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity saveComment(
-            @RequestBody CommentPost commentPost,
+    @PostMapping(value = "/ws/post/like", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity saveLike(
+            @RequestBody LikePost likePost,
             @RequestParam(value = "fetchId", required = false) boolean fetchId) {
 
         HashMap<String, Object> responseMap = new HashMap<>();
-        Optional<Token> token = tokenRepository.findTokenByCode(commentPost.getToken());
-        Optional<Post> post = postRepository.findById(commentPost.getPostid());
-        PostComment postComment = new PostComment();
+        Optional<Token> token = tokenRepository.findTokenByCode(likePost.getToken());
+        Optional<Post> post = postRepository.findById(likePost.getPostid());
+        PostLike postLike = new PostLike();
 
 
         if (token.isPresent()) {
-            postComment.setUser(token.get().getUser());
+            postLike.setUser(token.get().getUser());
         }else{
             responseMap.put("error", "TOKEN_INVALID");
             return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
         }
 
         if (post.isPresent()) {
-            postComment.setMessage(commentPost.getMessage());
-            postComment.setPost(post.get());
-            postCommentRepository.save(postComment);
+
+          /*  likePost.setPost(post.get());
+            postLikeRepository.save(likePost);
+
             if (fetchId) {
                 responseMap.put("commentId", postComment.getId());
-            }
+            }*/
             responseMap.put("status", "COMMENT_CREATED");
             return new ResponseEntity(responseMap, HttpStatus.OK);
         } else {
             responseMap.put("error", "POST_NOT_FOUND");
             return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
         }
+
+
 
     }
 
