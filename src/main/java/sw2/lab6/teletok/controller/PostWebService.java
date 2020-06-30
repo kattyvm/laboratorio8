@@ -39,11 +39,11 @@ public class PostWebService {
             List<Post> lista = postRepository.obtenerPost(description, username);
             if (!lista.isEmpty()) {
                 hashMap.put("estado", "ok");
-                hashMap.put("estado", lista);
+                hashMap.put("post", lista);
                 httpStatus = HttpStatus.OK;
             } else {
                 hashMap.put("estado", "ok");
-                hashMap.put("msg", listaP);
+                hashMap.put("post", listaP);
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
         } catch (NumberFormatException e) {
@@ -67,12 +67,12 @@ public class PostWebService {
         if (!opt.isPresent()) {
             postRepository.save(post);
             hashMap.put("id", opt.get());
-            hashMap.put("estado", "ok");
-            hashMap.put("msg", "Post creado exitosamente.");
+            hashMap.put("status", "POST_CREATED");
             httpStatus = HttpStatus.CREATED;
         } else {
-            hashMap.put("estado", "error");
-            hashMap.put("msg", "El post con id " + post.getId() + " no existe.");
+            hashMap.put("error", "EMPTY_FILE");
+            hashMap.put("error", "TOKEN_INVALID");
+            hashMap.put("error", "UPLOAD_ERROR");
             httpStatus = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity(hashMap, httpStatus);
