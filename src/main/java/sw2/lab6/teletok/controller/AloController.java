@@ -69,19 +69,20 @@ public class AloController {
                                       @RequestParam(value = "token", required = false) String token) {
         LinkedHashMap<String, Object> hashMap = new LinkedHashMap<>();
         HttpStatus httpStatus;
-       /* Boolean valid = false;
+        Boolean valid = false;
         Token tokentk=null;
         if (token != null) {
             Optional<Token> optToken = tokenRepository.findTokenByCode(token);
             if (!optToken.isPresent()) {
                 hashMap.put("error", "TOKEN_INVALID");
                 httpStatus = HttpStatus.BAD_REQUEST;
-                tokentk.
+                return new ResponseEntity(hashMap, httpStatus);
             } else {
+                tokentk=optToken.get();
                 valid = true;
 
             }
-        }*/
+        }
 
 
         try {
@@ -96,17 +97,18 @@ public class AloController {
                 hashMap.put("username", post.getUser().getUsername());
                 hashMap.put("commentCount", post.getComments().size());
                 hashMap.put("likeCount", post.getLikes().size());
-                /*if(valid) {
+                if(valid) {
                     List<PostLike> listLike = post.getLikes();
                     Boolean found = false;
                     for (PostLike pl : listLike) {
-                        if (pl.getUser() == optToken.get().getUser()) {
+                        if (pl.getUser() == tokentk.getUser()) {
                             found = true;
                         }
                     }
+                    hashMap.put("userlikePost", found);
                 }
-                hashMap.put("userlikePost", found);
-                */
+
+
                 hashMap.put("comments", post.getComments());
 
                 httpStatus = HttpStatus.OK;
