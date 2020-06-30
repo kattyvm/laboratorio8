@@ -6,13 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sw2.lab6.teletok.dto.CommentPost;
 import sw2.lab6.teletok.dto.LikePost;
 import sw2.lab6.teletok.entity.Post;
-import sw2.lab6.teletok.entity.PostComment;
 import sw2.lab6.teletok.entity.PostLike;
 import sw2.lab6.teletok.entity.Token;
-import sw2.lab6.teletok.repository.PostCommentRepository;
 import sw2.lab6.teletok.repository.PostLikeRepository;
 import sw2.lab6.teletok.repository.PostRepository;
 import sw2.lab6.teletok.repository.TokenRepository;
@@ -51,13 +48,13 @@ public class LikeWebService {
 
         if (post.isPresent()) {
 
-          /*  likePost.setPost(post.get());
-            postLikeRepository.save(likePost);
+            postLike.setPost(post.get());
+            postLikeRepository.save(postLike);
 
             if (fetchId) {
-                responseMap.put("commentId", postComment.getId());
-            }*/
-            responseMap.put("status", "COMMENT_CREATED");
+                responseMap.put("commentId", postLike.getId());
+            }
+            responseMap.put("status", "LIKE_CREATED");
             return new ResponseEntity(responseMap, HttpStatus.OK);
         } else {
             responseMap.put("error", "POST_NOT_FOUND");
