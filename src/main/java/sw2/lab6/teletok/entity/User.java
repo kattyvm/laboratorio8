@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="user")
-@JsonIgnoreProperties({"id","fullname", "enable", "rolId"})
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

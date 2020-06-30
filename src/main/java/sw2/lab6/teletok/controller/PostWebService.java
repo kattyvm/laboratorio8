@@ -56,14 +56,17 @@ public class PostWebService {
 
     @ResponseBody
     @PostMapping(value = "/ws/post/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity guardarPost(@RequestBody Post post) {
+    public ResponseEntity guardarPost(@RequestBody Post post,
+                                      @RequestParam("token") String code,
+                                      @RequestParam("description") String description,
+                                      @RequestParam("media") String mediaUrl) {
         HashMap<String, Object> hashMap = new HashMap<>();
         HttpStatus httpStatus;
 
-        Optional<Post> opt = postRepository.findById(post.getId());
+        Optional<Post> opt = postRepository.obtenerPostporParametros(code, description, mediaUrl);
         if (!opt.isPresent()) {
             postRepository.save(post);
-            hashMap.put("id", post.getId());
+            hashMap.put("id", opt.get());
             hashMap.put("estado", "ok");
             hashMap.put("msg", "Post creado exitosamente.");
             httpStatus = HttpStatus.CREATED;
